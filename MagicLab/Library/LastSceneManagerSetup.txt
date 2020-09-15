@@ -1,5 +1,5 @@
 sceneSetups:
-- path: Assets/Particles/particles.unity
+- path: Assets/Scenes/School.unity
   isLoaded: 1
   isActive: 1
   isSubScene: 0

@@ -2,13 +2,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Dynamic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
 
 public class GameManager : MonoBehaviour
 {
-    public static Mission[] Missions;
+    public static List<Mission> Missions = new List<Mission>();
     public static int CurrentMission = 0;
 
     public static Dictionary<ElementType, Material> Materials;
@@ -36,13 +37,10 @@ public class GameManager : MonoBehaviour
 
 
         }
-        Debug.Log("leo");
 
-
-        Missions = new Mission[] { new Mission(new Element[] { new Element(ElementType.H2O) }) };
+        Mission a = new Mission(new Element[] { new Element(ElementType.H2O) },new Element[] { new Element(ElementType.H2O) });
+        Missions.Add(a);
         
-
-
     }
 
     // Update is called once per frame
@@ -69,6 +67,6 @@ public enum ElementType
 {
     H = 1,
     O = 8,
-    H2O = 100,
+    H2O = 10,
 
 }

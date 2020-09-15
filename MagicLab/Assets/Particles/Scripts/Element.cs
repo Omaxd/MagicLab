@@ -19,6 +19,14 @@ public class Element : MonoBehaviour
         Name = E.ToString();
     }
 
+    public Element(String E)
+    {
+        Name = E;
+        Enum.TryParse(E, out ElementType e);
+        ElementNumber = e;
+
+    }
+
     public ElementType GetElementType()
     {
         return ElementNumber;
