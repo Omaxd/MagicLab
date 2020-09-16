@@ -17,7 +17,7 @@ public class DistillerReactor : Reactor
                 newElements.Add(new Element(ElementType.O));
                 newElements.Add(new Element(ElementType.O));
                 newElements.Add(new Element(ElementType.H));
-
+                
             }
         }
 

@@ -7,6 +7,8 @@ public class CameraControl : MonoBehaviour
     public float m_MovementSpeed;
     public float m_CameraRotationSpeed;
 
+    public bool inPlace = false;
+
     public Element MarkedE;
 
     Camera m_Cam;
@@ -25,98 +27,108 @@ public class CameraControl : MonoBehaviour
 
     void Update()
     {
-        float a;
-        float b;
-        float c;
 
-        a = Input.GetAxis("Horizontal");
-        b = -Input.GetAxis("Vertical");
-        c = Input.GetAxis("Up");
-
-
-
-
-
-
-
-
-
-
-
-        if (Input.GetMouseButtonDown(0))
+        if (inPlace)
         {
 
-            Ray ray = m_Cam.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit))
+            float a;
+            float b;
+            float c;
+
+            a = Input.GetAxis("Horizontal");
+            b = -Input.GetAxis("Vertical");
+            c = Input.GetAxis("Up");
+
+
+
+            if (Input.GetMouseButtonDown(0))
             {
-                if (hit.collider != null)
+
+                Ray ray = m_Cam.ScreenPointToRay(Input.mousePosition);
+                RaycastHit hit;
+                if (Physics.Raycast(ray, out hit))
                 {
-                    Element e = hit.collider.gameObject.GetComponent<Element>();
-                    if (e != null)
+                    if (hit.collider != null)
                     {
-                        if (MarkedE == e)
+                        Element e = hit.collider.gameObject.GetComponent<Element>();
+                        if (e != null)
                         {
-                            e.UnMarked();
-                            MarkedE = null;
-                        }
-                        else
-                        {
-                            if (MarkedE == null)
+                            if (MarkedE == e)
                             {
-                                e.Marked();
-                                MarkedE = e;
+                                e.UnMarked();
+                                MarkedE = null;
                             }
                             else
                             {
+                                if (MarkedE == null)
+                                {
+                                    e.Marked();
+                                    MarkedE = e;
+                                }
+                                else
+                                {
+                                    MarkedE.UnMarked();
+                                    MarkedE = e;
+                                    e.Marked();
+                                }
+                            }
+                        }
+                        else
+                        {
+                            if (MarkedE != null)
+                            {
                                 MarkedE.UnMarked();
-                                MarkedE = e;
-                                e.Marked();
+                                MarkedE = null;
                             }
                         }
                     }
-                    else
-                    {
-                        if (MarkedE != null)
-                        {
-                            MarkedE.UnMarked();
-                            MarkedE = null;
-                        }
-                    }
+
                 }
 
+
+
+            }
+            if (MarkedE != null)
+            {
+                MarkedE.Translate(new Vector3(-a, -c, b) * 0.1f);
+                return;
             }
 
 
+            m_Cam.transform.Rotate(b, 0, 0, Space.Self);
+            m_Cam.transform.Rotate(0, a, 0, Space.Self);
 
         }
-        if (MarkedE != null)
+
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
-            MarkedE.Translate(new Vector3(a, -c, -b) * 0.1f);
-            return;
+            m_Cam.transform.rotation = new Quaternion(0, 0, 0, 0);
+            if (MarkedE != null)
+                MarkedE.UnMarked();
+            inPlace = !inPlace;
         }
-
-
-        m_Cam.transform.Rotate(b, 0, 0, Space.Self);
-        m_Cam.transform.Rotate(0, a, 0, Space.Self);
-
-
 
 
     }
 
     void FixedUpdate()
     {
-        //float x;
-        //float y;
+        if (!inPlace)
+        {
+            float x;
+            float y;
 
-        //x = Input.GetAxis("Horizontal");
-        //y = Input.GetAxis("Vertical");
+            y = Input.GetAxis("Forward");
+            x = Input.GetAxis("Side");
 
-        //Vector3 zz = transform.rotation * Vector3.forward * y * m_MovementSpeed;
+            Vector3 zz = transform.rotation * Vector3.forward * y * m_MovementSpeed;
 
-        //m_Rig.velocity = zz;
+            m_Rig.velocity = zz;
 
-        //transform.Rotate(0, x * 5, 0);
+            transform.Rotate(0, x * 5, 0);
+        }
+        else
+            m_Rig.velocity = Vector3.zero;
+
     }
 }

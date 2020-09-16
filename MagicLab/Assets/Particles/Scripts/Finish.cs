@@ -6,6 +6,7 @@ using UnityEngine;
 public class Finish : MonoBehaviour
 {
     public IContainer Container;
+    public GameManager gameManager;
 
     // Start is called before the first frame update
     void Start()
@@ -26,11 +27,11 @@ public class Finish : MonoBehaviour
 
         if (l.Count() == l2.Count())
             if (l[0].ElementNumber == l2[0].ElementNumber)
-                GameManager.FinishMission();
+                gameManager.FinishMission();
             else
-                GameManager.MissionFailed();
+                gameManager.MissionFailed();
         else
-            GameManager.MissionFailed();
+            gameManager.MissionFailed();
     }
 
 

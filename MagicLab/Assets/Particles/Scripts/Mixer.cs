@@ -26,7 +26,7 @@ public class Mixer : MonoBehaviour, IContainer
     void Update()
     {
         Collider[] hitColliders = 
-            Physics.OverlapBox(Tank.transform.position, Tank.transform.localScale / 2,
+            Physics.OverlapBox(Tank.transform.position, Tank.transform.lossyScale / 2,
             Quaternion.identity, layerMask);
 
         Elements = hitColliders.ToList();
@@ -42,9 +42,12 @@ public class Mixer : MonoBehaviour, IContainer
         El = from E in Elements select E.GetComponent<Element>();
         El = El.ToList();
 
+        List <Element> El2 = new List<Element>(El);
 
         El = MixingFormulas.Mix(El, this);
 
+        if (El.Count() == El2.Count())
+            return;
         DestroyElements();
         CreateElements(El);
 

@@ -5,9 +5,12 @@ using UnityEngine;
 
 public class Mission
 {
-    List<Element> RequiredElements;
-    List<Element> AvailableElements;
-    public Mission(IEnumerable<Element> RElements, IEnumerable<Element> AElements)
+    public List<Element> RequiredElements;
+    public List<Element> AvailableElements;
+    
+
+
+    public Mission(List<Element> RElements, List<Element> AElements)
     {
         RequiredElements = new List<Element>();
         RequiredElements.AddRange(RElements);
@@ -20,6 +23,8 @@ public class Mission
     {
         return RequiredElements;
     }
+
+    
 
 
 }

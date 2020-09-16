@@ -14,7 +14,7 @@ public class MixerReactor : Reactor
     public override IEnumerable<Element> Reaction(IEnumerable<Element> Elements)
     {
         int HashNumber = 0;
-
+        Element el;
         List<Element> newElements = new List<Element>();
         foreach (Element e in Elements)
         {
@@ -23,10 +23,13 @@ public class MixerReactor : Reactor
 
         if (HashNumber != 0)
         {
-            Element el = new Element(Enum.GetName(typeof(ElementType), HashNumber));
+            el = new Element(Enum.GetName(typeof(ElementType), HashNumber));
             newElements.Add(el);
         }
 
+        if (newElements[0].Name == null)
+            return Elements;
+        GameManager.ElementsInGame.AddRange(newElements);
         return newElements;
     }
 }
